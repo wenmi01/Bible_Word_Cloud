@@ -1,0 +1,60 @@
+---
+---
+Bible Word Cloud
+=============================
+###Rowen Remis R. Iral
+####2014 September 07
+
+Data Scientist with MBA, IT Engineer certification, Marketing Mastery(Internet Marketer) and Solutions Architect (Cloud)
+
+http://wenup.wordpress.com
+http://wenmi01.tublr.com
+
+--
+The goal of this data is to show the word cloud from the King James Version of the Bible.
+
+##System that Run this knitted Document
+Ubuntu 64-bit running on a Koding.com server (free)
+  with RStudio Server
+
+--
+##Getting the Data
+Our data can be downloaded from:
+```
+http://printkjv.ifbweb.com/AV_txt.zip
+```
+
+##Downloading the Zip File
+```{r}
+download.file(url = "http://printkjv.ifbweb.com/AV_txt.zip", destfile="AV_txt.zip", method="curl")
+```
+
+##Unzip the KJV Bible
+```{r}
+unzip("AV_txt.zip")
+```
+
+##Bible Variable
+```{r}
+bible <- readLines(con <- file("AV1611Bible.txt"))
+```
+
+##Processing the Bible
+In order to create the word cloud, we will need the tm and wordcloud packages in R.
+These are text mining and world cloud plotting tools.
+```{r}
+library(tm)
+library(wordcloud)
+corp <- Corpus(VectorSource(bible))
+corp <- tm_map(corp,removePunctuation)
+corp <- tm_map(corp, function(x)removeWords(x,stopwords()))
+```
+
+##Create the Wordcloud
+```{r}
+#png("bible_word_cloud_rri.png", width=1280,height=800)
+pal2 <- brewer.pal(8,"Dark2")
+wordcloud(corp, random.order=FALSE, colors=pal2, rot.per=.15)
+#dev.off()
+```
+The word cloud of Bible
